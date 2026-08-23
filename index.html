@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Iris</title>
+  <meta name="description" content="Iris — VRChat, games, tech & 3D. Welcome to my little corner of the internet.">
+  <meta name="theme-color" content="#141E4F">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Mochiy+Pop+P+One&display=swap" rel="stylesheet">
+
+  <link rel="icon" href="assets/images/profile.jpg">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <a class="skip-link" href="#home">Saltar al contenido</a>
+
+  <header class="site-nav" id="top">
+    <div class="nav-inner">
+      <a class="brand" href="#home">
+        <span class="brand-name">Iris</span>
+      </a>
+
+      <nav class="nav-links" id="navMenu" aria-label="Navegación principal" data-i18n-aria="nav.label">
+        <a href="#home" class="nav-link" data-i18n="nav.home">Home</a>
+        <a href="#about" class="nav-link" data-i18n="nav.about">About</a>
+        <a href="#vrchat" class="nav-link" data-i18n="nav.vrchat">VRChat</a>
+        <a href="#setup" class="nav-link" data-i18n="nav.setup">Setup</a>
+        <a href="#links" class="nav-link" data-i18n="nav.links">Links</a>
+      </nav>
+
+      <div class="nav-actions">
+        <div class="lang-switch" role="group" aria-label="Idioma / Language">
+          <button type="button" class="lang-btn" data-lang="es" aria-pressed="true" lang="es">ES</button>
+          <span class="lang-sep" aria-hidden="true">|</span>
+          <button type="button" class="lang-btn" data-lang="en" aria-pressed="false" lang="en">EN</button>
+        </div>
+
+        <button type="button" class="nav-toggle" aria-expanded="false" aria-controls="navMenu">
+          <span class="sr-only">Menú</span>
+          <span class="nav-toggle-bar"></span>
+          <span class="nav-toggle-bar"></span>
+          <span class="nav-toggle-bar"></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main id="home" class="page">
+
+    <section class="hero" aria-label="Inicio">
+      <div class="hero-inner reveal">
+        <div class="hero-avatar">
+          <img src="assets/images/profile.jpg" alt="Foto de perfil de Iris" width="180" height="180" data-i18n-alt="hero.profileAlt">
+        </div>
+
+        <h1 class="hero-title">Iris</h1>
+        <p class="hero-subtitle" data-i18n="hero.subtitle">VRChat • Games • Tech • 3D</p>
+        <p class="hero-intro" data-i18n="hero.intro">hi!! I'm Iris :3 — welcome to my little corner of the internet.</p>
+
+        <ul class="hero-tags" data-render="hero.tags"></ul>
+
+        <div class="hero-links" data-render="hero.links"></div>
+      </div>
+      <a class="hero-scroll" href="#about" aria-label="Bajar a la siguiente sección" data-i18n-aria="hero.scroll">
+        <span aria-hidden="true">▾</span>
+      </a>
+    </section>
+
+    <section id="about" class="section">
+      <div class="section-head reveal">
+        <p class="eyebrow" data-i18n="about.eyebrow">holiii</p>
+        <h2 class="section-title" data-i18n="about.title">Sobre mí</h2>
+        <p class="section-subtitle" data-i18n="about.subtitle">un poquito sobre quién soy</p>
+      </div>
+
+      <div class="about-grid reveal">
+        <article class="card card-about">
+          <h3 class="card-title" data-i18n="about.aboutTitle">About me</h3>
+          <p class="card-text" data-i18n="about.aboutBody">Hi!! I'm Iris :3 I spend a suspicious amount of time playing games, messing with technology and hanging out in VR.</p>
+        </article>
+
+        <article class="card">
+          <h3 class="card-title" data-i18n="about.likesTitle">Things I like</h3>
+          <p class="card-text" data-render="about.likes"></p>
+        </article>
+
+        <article class="card">
+          <h3 class="card-title" data-i18n="about.langTitle">Languages</h3>
+          <ul class="lang-list">
+            <li>
+              <span class="lang-name" data-i18n="about.lang1name">Español</span>
+              <span class="lang-level" data-i18n="about.lang1level">Nativo</span>
+            </li>
+            <li>
+              <span class="lang-name" data-i18n="about.lang2name">English</span>
+              <span class="lang-level" data-i18n="about.lang2level">Fluido</span>
+            </li>
+          </ul>
+        </article>
+
+        <article class="card">
+          <h3 class="card-title" data-i18n="about.infoTitle">General info</h3>
+          <ul class="info-list" data-render="about.info"></ul>
+        </article>
+      </div>
+    </section>
+
+    <section id="interests" class="section">
+      <div class="section-head reveal">
+        <p class="eyebrow" data-i18n="interests.eyebrow">things i'm into</p>
+        <h2 class="section-title" data-i18n="interests.title">Interests</h2>
+        <p class="section-subtitle" data-i18n="interests.subtitle">cosas que me gustan, sin orden particular</p>
+      </div>
+
+      <div class="interests-grid reveal" data-render="interests.groups"></div>
+    </section>
+
+    <section id="vrchat" class="section">
+      <div class="section-head reveal">
+        <p class="eyebrow" data-i18n="vrchat.eyebrow">my main social space</p>
+        <h2 class="section-title" data-i18n="vrchat.title">VRChat</h2>
+        <p class="section-subtitle" data-i18n="vrchat.subtitle">donde me vas a encontrar la mayor parte del tiempo</p>
+      </div>
+
+      <div class="vrchat-layout reveal">
+        <figure class="vrchat-figure">
+          <img src="assets/images/vrchat.png" alt="Imagen de mi avatar de VRChat" width="1920" height="1080" loading="lazy">
+          <figcaption class="sr-only" data-i18n="vrchat.imageAlt">Mi avatar de VRChat</figcaption>
+        </figure>
+
+        <div class="vrchat-info">
+          <p class="card-text" data-i18n="vrchat.body">Este es mi espacio social principal :3 Suelo estar por mundos random, con amigos o simplemente chill. Si me ves por ahí, saluda!</p>
+
+          <div class="vrchat-meta">
+            <div class="meta-card">
+              <span class="meta-icon" aria-hidden="true">🥽</span>
+              <div>
+                <span class="meta-label" data-i18n="vrchat.platformLabel">Platform</span>
+                <span class="meta-value" data-i18n="vrchat.platformValue">PCVR</span>
+              </div>
+            </div>
+            <div class="meta-card">
+              <span class="meta-icon" aria-hidden="true">🦵</span>
+              <div>
+                <span class="meta-label" data-i18n="vrchat.trackingLabel">Tracking</span>
+                <span class="meta-value" data-i18n="vrchat.trackingValue">Full-body tracking</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="vrchat-worlds">
+            <h3 class="card-title" data-i18n="vrchat.worldsTitle">Favorite worlds</h3>
+            <p class="card-text" data-render="vrchat.worlds"></p>
+          </div>
+
+          <div class="vrchat-links" data-render="vrchat.links"></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="setup" class="section">
+      <div class="section-head reveal">
+        <p class="eyebrow" data-i18n="setup.eyebrow">my gear</p>
+        <h2 class="section-title" data-i18n="setup.title">My Setup</h2>
+        <p class="section-subtitle" data-i18n="setup.subtitle">las cosas que uso para jugar, crear y estar en VR</p>
+      </div>
+
+      <div class="setup-grid reveal" data-render="setup.cards"></div>
+    </section>
+
+    <section id="links" class="section">
+      <div class="section-head reveal">
+        <p class="eyebrow" data-i18n="links.eyebrow">find me</p>
+        <h2 class="section-title" data-i18n="links.title">Links</h2>
+        <p class="section-subtitle" data-i18n="links.subtitle">donde puedes encontrarme o apoyarme</p>
+      </div>
+
+      <ul class="links-grid reveal" data-render="links.items"></ul>
+    </section>
+
+  </main>
+
+  <div class="page-end">
+    <a class="back-top" href="#home" data-i18n="end.backToTop">Volver arriba ↑</a>
+    <p class="made-with" data-i18n="end.madeWith">hecho con cariño por Iris ♥</p>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
