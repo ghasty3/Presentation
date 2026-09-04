@@ -31,6 +31,39 @@ const LINKS = [
 ];
 
 /* --------------------------------------------------------------------------
+   1b. MUSIC — corner player playlist.
+   Drop your mp3 files into assets/audio/ and their covers into
+   assets/covers/ (named after the song) and add them here.
+   - title      : shown in the player
+   - src        : path to the audio file
+   - cover      : spinning disc image (falls back to profile.jpg if missing)
+   - startDelay : fake loading time (ms) before the first play attempt
+   - volume     : 0.0 – 1.0
+   -------------------------------------------------------------------------- */
+
+const MUSIC = {
+  tracks: [
+    { title: 'lovergirl', src: 'assets/audio/lovergirl.mp3', cover: 'assets/covers/lovergirl.png' },
+    { title: 'High On Heaven', src: 'assets/audio/High On Heaven.mp3', cover: 'assets/covers/High On Heaven.png' }
+  ],
+  startDelay: 6000,
+  volume: 0.8
+};
+
+/* --------------------------------------------------------------------------
+   1c. VISITS — page visit counter (see end of the page).
+   - mode 'abacus' : plain number styled with a pixel font (works, recommended)
+   - mode 'moe'    : pixel-art image from count.getloli.com (service was
+                     unreachable when tested — keep 'abacus' unless it works)
+   -------------------------------------------------------------------------- */
+
+const VISITS = {
+  mode: 'abacus',
+  abacus: 'https://abacus.jasoncameron.dev/hit/irisiwi/visits',
+  moe: 'https://count.getloli.com/get/@irisiwi?theme=moebooru'
+};
+
+/* --------------------------------------------------------------------------
    2. TRANSLATIONS — all UI text (Spanish is the default language)
    Replace the placeholder strings below with your real copy.
    -------------------------------------------------------------------------- */
@@ -108,7 +141,15 @@ const translations = {
     },
     end: {
       backToTop: 'Volver arriba ↑',
-      madeWith: 'hecho con cariño por Iris ♥'
+      madeWith: 'hecho con cariño por Iris ♥',
+      visits: 'visitas'
+    },
+    music: {
+      loading: 'cargando',
+      play: 'Reproducir',
+      pause: 'Pausar',
+      skip: 'Siguiente canción',
+      aria: 'Reproductor de música'
     }
   },
 
@@ -164,7 +205,7 @@ const translations = {
       platformLabel: 'Platform', platformValue: 'PCVR',
       trackingLabel: 'Tracking', trackingValue: '6 Gorbit Slimes · ICM45',
       worldsTitle: 'Favorite worlds',
-      worlds: "My favorite world is El Opti YT Search. It's fun not playing in a slideshow."
+      worlds: "My favorite world is the Opti YT Search. It's fun not playing in a slideshow."
     },
     setup: {
       eyebrow: 'my gear',
@@ -184,7 +225,15 @@ const translations = {
     },
     end: {
       backToTop: 'Back to top ↑',
-      madeWith: 'made with ♥ by Iris'
+      madeWith: 'made with ♥ by Iris',
+      visits: 'visitors'
+    },
+    music: {
+      loading: 'loading',
+      play: 'Play',
+      pause: 'Pause',
+      skip: 'Next song',
+      aria: 'Music player'
     }
   }
 };
@@ -422,10 +471,224 @@ function initReveal() {
   targets.forEach((t) => observer.observe(t));
 }
 
+/* ==========================================================================
+   7. Music player
+   ========================================================================== */
+
+const MUSIC_ICONS = {
+  play: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z" fill="currentColor"/></svg>',
+  pause: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 5h4v14H6V5zm8 0h4v14h-4V5z" fill="currentColor"/></svg>',
+  skip: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 5l9 7-9 7V5zm10 0h2v14h-2V5z" fill="currentColor"/></svg>'
+};
+
+let startMusicLoading = () => {};
+
+function initMusicPlayer() {
+  const player = document.getElementById('musicPlayer');
+  if (!player || !MUSIC.tracks.length) return;
+
+  const audio = new Audio();
+  audio.preload = 'auto';
+  audio.volume = MUSIC.volume;
+
+  const titleEl = document.getElementById('musicTitle');
+  const statusEl = document.getElementById('musicStatus');
+  const progressEl = document.getElementById('musicProgress');
+  const fillEl = document.getElementById('musicProgressFill');
+  const toggleBtn = document.getElementById('musicToggle');
+  const skipBtn = document.getElementById('musicSkip');
+  const discImg = player.querySelector('.music-disc img');
+
+  skipBtn.innerHTML = MUSIC_ICONS.skip;
+
+  let index = 0;
+
+  const music = () => translations[currentLang].music;
+  const fmt = (t) => Math.floor(t / 60) + ':' + String(Math.floor(t % 60)).padStart(2, '0');
+
+  function setState(state) {
+    player.dataset.state = state;
+  }
+
+  function setToggleIcon() {
+    const playing = player.dataset.state === 'playing';
+    toggleBtn.innerHTML = playing ? MUSIC_ICONS.pause : MUSIC_ICONS.play;
+    toggleBtn.setAttribute('aria-label', playing ? music().pause : music().play);
+  }
+
+  function setPlaying(isPlaying) {
+    setState(isPlaying ? 'playing' : 'paused');
+    setToggleIcon();
+  }
+
+  function loadTrack(i) {
+    index = (i + MUSIC.tracks.length) % MUSIC.tracks.length;
+    audio.src = MUSIC.tracks[index].src;
+    titleEl.textContent = MUSIC.tracks[index].title;
+    discImg.onerror = () => { discImg.src = 'assets/images/profile.jpg'; };
+    discImg.src = MUSIC.tracks[index].cover || 'assets/images/profile.jpg';
+  }
+
+  const INTERACTION_EVENTS = ['pointerdown', 'keydown', 'touchstart'];
+
+  function unlockInteraction() {
+    INTERACTION_EVENTS.forEach((e) => window.removeEventListener(e, onFirstInteraction));
+  }
+
+  function onFirstInteraction(e) {
+    if (player.dataset.state === 'playing') return;
+    if (e.target && player.contains(e.target)) return;
+    unlockInteraction();
+    tryPlay();
+  }
+
+  function tryPlay() {
+    audio.play().then(() => {
+      unlockInteraction();
+      setPlaying(true);
+    }).catch(() => {
+      setPlaying(false);
+      if (!audio.duration) statusEl.textContent = '…';
+    });
+  }
+
+  toggleBtn.addEventListener('click', () => {
+    if (player.dataset.state === 'playing') {
+      audio.pause();
+      setPlaying(false);
+    } else {
+      tryPlay();
+    }
+  });
+
+  skipBtn.addEventListener('click', () => {
+    const wasPlaying = player.dataset.state === 'playing';
+    loadTrack(index + 1);
+    if (wasPlaying) tryPlay();
+  });
+
+  progressEl.addEventListener('click', (e) => {
+    if (!audio.duration || player.dataset.state === 'loading') return;
+    const rect = progressEl.getBoundingClientRect();
+    audio.currentTime = ((e.clientX - rect.left) / rect.width) * audio.duration;
+  });
+
+  audio.addEventListener('timeupdate', () => {
+    if (audio.duration) {
+      fillEl.style.width = (audio.currentTime / audio.duration) * 100 + '%';
+      statusEl.textContent = fmt(audio.currentTime) + ' / ' + fmt(audio.duration);
+    }
+  });
+
+  audio.addEventListener('ended', () => {
+    loadTrack(index + 1);
+    tryPlay();
+  });
+
+  audio.addEventListener('error', () => {
+    if (player.dataset.state !== 'loading') {
+      setState('paused');
+      setToggleIcon();
+      statusEl.textContent = '…';
+    }
+  });
+
+  loadTrack(0);
+  fillEl.style.width = '0%';
+  statusEl.textContent = music().loading + '… 0%';
+
+  function startLoading() {
+    const start = performance.now();
+    const timer = setInterval(() => {
+      const pct = Math.min(100, Math.round(((performance.now() - start) / MUSIC.startDelay) * 100));
+      fillEl.style.width = pct + '%';
+      statusEl.textContent = music().loading + '… ' + pct + '%';
+      if (pct >= 100) {
+        clearInterval(timer);
+        toggleBtn.disabled = false;
+        skipBtn.disabled = false;
+        setState('paused');
+        setToggleIcon();
+        tryPlay();
+        INTERACTION_EVENTS.forEach((e) => window.addEventListener(e, onFirstInteraction, { passive: true }));
+      }
+    }, 80);
+  }
+
+  startMusicLoading = startLoading;
+}
+
+/* ==========================================================================
+   8. Visit counter
+   ========================================================================== */
+
+function initVisitCounter() {
+  const el = document.getElementById('visitCounter');
+  if (!el) return;
+
+  if (VISITS.mode === 'moe') {
+    const img = document.createElement('img');
+    img.className = 'visit-count-img';
+    img.alt = '';
+    img.referrerPolicy = 'no-referrer';
+    img.src = VISITS.moe + '&_=' + Date.now();
+    el.replaceChildren(img);
+    return;
+  }
+
+  fetch(VISITS.abacus)
+    .then((r) => r.json())
+    .then((data) => {
+      if (typeof data.value === 'number') el.textContent = data.value;
+    })
+    .catch(() => {});
+}
+
+/* ==========================================================================
+   9. Entry overlay
+   ========================================================================== */
+
+function initEntryOverlay() {
+  const overlay = document.getElementById('entryOverlay');
+
+  if (!overlay) {
+    initReveal();
+    startMusicLoading();
+    return;
+  }
+
+  const content = document.querySelectorAll('header.site-nav, main, .page-end, .music-player, .skip-link');
+  document.body.classList.add('locked');
+  content.forEach((el) => { el.inert = true; });
+  overlay.focus();
+
+  function enter(lang) {
+    if (lang === 'es' || lang === 'en') {
+      localStorage.setItem(STORAGE_KEY, lang);
+      applyLanguage(lang);
+    }
+    document.body.classList.remove('locked');
+    content.forEach((el) => { el.inert = false; });
+    overlay.classList.add('dismissed');
+    setTimeout(() => overlay.remove(), 700);
+    initReveal();
+    startMusicLoading();
+  }
+
+  overlay.querySelectorAll('.entry-btn').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      btn.classList.add('selected');
+      setTimeout(() => enter(btn.getAttribute('data-lang')), 420);
+    });
+  });
+}
+
 function init() {
   initLanguage();
   initNav();
-  initReveal();
+  initMusicPlayer();
+  initVisitCounter();
+  initEntryOverlay();
 }
 
 document.addEventListener('DOMContentLoaded', init);

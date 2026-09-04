@@ -9,7 +9,7 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Mochiy+Pop+P+One&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Mochiy+Pop+P+One&family=Press+Start+2P&display=swap" rel="stylesheet">
 
   <link rel="icon" href="assets/images/profile.jpg">
   <link rel="stylesheet" href="styles.css">
@@ -187,6 +187,38 @@
   <div class="page-end">
     <a class="back-top" href="#home" data-i18n="end.backToTop">Volver arriba ↑</a>
     <p class="made-with" data-i18n="end.madeWith">hecho con cariño por Iris ♥</p>
+    <div class="visit-counter">
+      <span class="visit-label" data-i18n="end.visits">visitas</span>
+      <span class="visit-count" id="visitCounter">···</span>
+    </div>
+  </div>
+
+  <aside class="music-player" id="musicPlayer" data-state="loading" data-i18n-aria="music.aria">
+    <div class="music-disc" aria-hidden="true">
+      <img src="assets/images/profile.jpg" alt="">
+      <span class="music-disc-hole"></span>
+    </div>
+    <div class="music-body">
+      <span class="music-title" id="musicTitle"></span>
+      <span class="music-status" id="musicStatus">…</span>
+      <div class="music-progress" id="musicProgress">
+        <span class="music-progress-fill" id="musicProgressFill"></span>
+      </div>
+      <div class="music-controls">
+        <button type="button" class="music-btn" id="musicToggle" disabled></button>
+        <button type="button" class="music-btn" id="musicSkip" data-i18n-aria="music.skip" disabled></button>
+      </div>
+    </div>
+  </aside>
+
+  <div class="entry-overlay" id="entryOverlay" role="dialog" aria-label="Select language — Selecciona idioma" tabindex="-1">
+    <div class="entry-inner">
+      <p class="entry-title">Select language — Selecciona idioma</p>
+      <div class="entry-buttons">
+        <button type="button" class="entry-btn" data-lang="en">English</button>
+        <button type="button" class="entry-btn" data-lang="es">Español</button>
+      </div>
+    </div>
   </div>
 
   <script src="script.js"></script>
