@@ -64,6 +64,31 @@ const VISITS = {
 };
 
 /* --------------------------------------------------------------------------
+   1d. GALLERY — photo sections for the gallery tab.
+   Static hosting can't list folder contents, so each photo is one line here:
+   just add the path relative to this file. Sections without photos show an
+   empty state until you add them.
+   -------------------------------------------------------------------------- */
+
+const GALLERY = {
+  photos: {
+    vrchat: [
+      'assets/images/vrchat.png'
+    ],
+    irl: [
+      'assets/images/Imagen1.png',
+      'assets/images/Imagen2.jpg',
+      'assets/images/Imagen3.jpg',
+      'assets/images/Imagen4.jpg',
+      'assets/images/Imagen5.jpg',
+      'assets/images/Imagen6.jpg',
+      'assets/images/Imagen7.jpg'
+    ],
+    minecraft: []
+  }
+};
+
+/* --------------------------------------------------------------------------
    2. TRANSLATIONS — all UI text (Spanish is the default language)
    Replace the placeholder strings below with your real copy.
    -------------------------------------------------------------------------- */
@@ -150,6 +175,12 @@ const translations = {
       pause: 'Pausar',
       skip: 'Siguiente canción',
       aria: 'Reproductor de música'
+    },
+    gallery: {
+      open: 'Galería',
+      title: 'Galería',
+      close: 'Cerrar galería',
+      empty: 'Aún no hay fotos por aquí'
     }
   },
 
@@ -234,6 +265,12 @@ const translations = {
       pause: 'Pause',
       skip: 'Next song',
       aria: 'Music player'
+    },
+    gallery: {
+      open: 'Gallery',
+      title: 'Gallery',
+      close: 'Close gallery',
+      empty: 'No photos here yet'
     }
   }
 };
@@ -425,7 +462,7 @@ function initNav() {
   });
 
   menu.addEventListener('click', (e) => {
-    if (e.target.closest('a')) {
+    if (e.target.closest('a, button')) {
       menu.classList.remove('nav-open');
       toggle.setAttribute('aria-expanded', 'false');
       toggle.classList.remove('is-open');
@@ -683,11 +720,95 @@ function initEntryOverlay() {
   });
 }
 
+/* ==========================================================================
+   10. Gallery
+   ========================================================================== */
+
+const GALLERY_SECTIONS = [
+  { id: 'vrchat', label: 'VRChat' },
+  { id: 'irl', label: 'IRL' },
+  { id: 'minecraft', label: 'Minecraft' }
+];
+
+function initGallery() {
+  const gallery = document.getElementById('gallery');
+  const openBtn = document.getElementById('openGallery');
+  const closeBtn = document.getElementById('closeGallery');
+  const tabsEl = gallery.querySelector('[data-render="gallery.tabs"]');
+  const gridEl = gallery.querySelector('[data-render="gallery.grid"]');
+
+  let active = 'vrchat';
+  let lastFocus = null;
+
+  const t = () => translations[currentLang];
+
+  function renderTabs() {
+    tabsEl.innerHTML = GALLERY_SECTIONS.map((s) =>
+      `<button type="button" class="gallery-tab${s.id === active ? ' is-active' : ''}" role="tab"
+         aria-selected="${s.id === active}" data-section="${s.id}">${s.label}</button>`
+    ).join('');
+  }
+
+  function renderGrid() {
+    const photos = GALLERY.photos[active] || [];
+    if (!photos.length) {
+      gridEl.innerHTML = `<div class="gallery-empty"><span aria-hidden="true">📷</span><p>${t().gallery.empty}</p></div>`;
+      return;
+    }
+    gridEl.innerHTML = photos.map((src, i) =>
+      `<figure class="gallery-item">
+         <img src="${src}" alt="${active} ${i + 1}" loading="lazy">
+       </figure>`
+    ).join('');
+  }
+
+  function render() {
+    renderTabs();
+    renderGrid();
+  }
+
+  tabsEl.addEventListener('click', (e) => {
+    const tab = e.target.closest('.gallery-tab');
+    if (!tab || tab.getAttribute('data-section') === active) return;
+    active = tab.getAttribute('data-section');
+    render();
+  });
+
+  function open() {
+    lastFocus = document.activeElement;
+    active = 'vrchat';
+    render();
+    gallery.hidden = false;
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => gallery.classList.add('is-open'));
+    });
+    document.body.classList.add('locked');
+    closeBtn.focus();
+  }
+
+  function close() {
+    gallery.classList.remove('is-open');
+    document.body.classList.remove('locked');
+    setTimeout(() => { gallery.hidden = true; }, 320);
+    if (lastFocus) lastFocus.focus();
+  }
+
+  document.querySelectorAll('#openGallery, #navGallery').forEach((btn) => {
+    btn.addEventListener('click', open);
+  });
+  closeBtn.addEventListener('click', close);
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && !gallery.hidden) close();
+  });
+}
+
 function init() {
   initLanguage();
   initNav();
   initMusicPlayer();
   initVisitCounter();
+  initGallery();
   initEntryOverlay();
 }
 

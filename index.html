@@ -30,6 +30,7 @@
         <a href="#vrchat" class="nav-link" data-i18n="nav.vrchat">VRChat</a>
         <a href="#setup" class="nav-link" data-i18n="nav.setup">Setup</a>
         <a href="#links" class="nav-link" data-i18n="nav.links">Links</a>
+        <button type="button" class="nav-link nav-gallery" id="navGallery" data-i18n="gallery.open">Galería</button>
       </nav>
 
       <div class="nav-actions">
@@ -127,10 +128,16 @@
       </div>
 
       <div class="vrchat-layout reveal">
-        <figure class="vrchat-figure">
-          <img src="assets/images/vrchat.png" alt="Imagen de mi avatar de VRChat" width="1920" height="1080" loading="lazy">
-          <figcaption class="sr-only" data-i18n="vrchat.imageAlt">Mi avatar de VRChat</figcaption>
-        </figure>
+        <div class="vrchat-media">
+          <figure class="vrchat-figure">
+            <img src="assets/images/vrchat.png" alt="Imagen de mi avatar de VRChat" width="1920" height="1080" loading="lazy">
+            <figcaption class="sr-only" data-i18n="vrchat.imageAlt">Mi avatar de VRChat</figcaption>
+          </figure>
+          <button type="button" class="btn gallery-cta" id="openGallery">
+            <span class="gallery-cta-icon" aria-hidden="true">📷</span>
+            <span data-i18n="gallery.open">Galería</span>
+          </button>
+        </div>
 
         <div class="vrchat-info">
           <p class="card-text" data-i18n="vrchat.body">Este es mi espacio social principal :3 Suelo estar por mundos random, con amigos o simplemente chill. Si me ves por ahí, saluda!</p>
@@ -190,6 +197,19 @@
     <div class="visit-counter">
       <span class="visit-label" data-i18n="end.visits">visitas</span>
       <span class="visit-count" id="visitCounter">···</span>
+    </div>
+  </div>
+
+  <div class="gallery" id="gallery" role="dialog" aria-label="Galería" hidden>
+    <div class="gallery-header">
+      <h2 class="gallery-title" data-i18n="gallery.title">Galería</h2>
+      <button type="button" class="gallery-close" id="closeGallery" data-i18n-aria="gallery.close">
+        <span aria-hidden="true">✕</span>
+      </button>
+    </div>
+    <div class="gallery-tabs" role="tablist" aria-label="Secciones de la galería" data-render="gallery.tabs"></div>
+    <div class="gallery-scroll">
+      <div class="gallery-grid" data-render="gallery.grid"></div>
     </div>
   </div>
 
