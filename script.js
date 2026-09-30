@@ -73,7 +73,13 @@ const VISITS = {
 const GALLERY = {
   photos: {
     vrchat: [
-      'assets/images/vrchat.png'
+      'assets/images/vrchat.png',
+      'assets/images/vrchat1.png',
+      'assets/images/vrchat2.png',
+      'assets/images/vrchat3.png',
+      'assets/images/vrchat4.png',
+      'assets/images/vrchat5.png',
+      'assets/images/vrchat6.png'
     ],
     irl: [
       'assets/images/Imagen1.png',
@@ -84,7 +90,14 @@ const GALLERY = {
       'assets/images/Imagen6.jpg',
       'assets/images/Imagen7.jpg'
     ],
-    minecraft: []
+    minecraft: [
+      'assets/images/minecraft1.png',
+      'assets/images/minecraft2.png',
+      'assets/images/minecraft3.png',
+      'assets/images/minecraft4.png',
+      'assets/images/minecraft5.png',
+      'assets/images/minecraft6.png'
+    ]
   }
 };
 
