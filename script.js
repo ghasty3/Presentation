@@ -166,7 +166,7 @@ const translations = {
       title: 'Mi Setup',
       subtitle: 'las cosas que uso para jugar, crear y estar en VR',
       cards: [
-        { icon: '💻', title: 'PC', items: ['Ryzen 7 3700X', 'RTX 5060 Ti 16GB', '32 GB RAM', 'WOLED QHD 240Hz (ROG)'] },
+        { icon: '💻', title: 'PC', items: ['Ryzen 7 3700X', 'RTX 5060 Ti 16GB', '64 GB RAM', 'WOLED QHD 240Hz (ROG)'] },
         { icon: '🥽', title: 'VR', items: ['Meta Quest 3', 'PCVR', '6 SlimeVR trackers'] },
         { icon: '🎮', title: 'Otros periféricos', items: ['Ajazz AK820 MAX HE', 'ATK F1 V2 Ultimate', 'EasySMX X20'] },
         { icon: '🎧', title: 'Audio', items: ['Logitech G435', 'FIFINE K688'] }
@@ -256,7 +256,7 @@ const translations = {
       title: 'My Setup',
       subtitle: 'what I use to play, create and hang out in VR',
       cards: [
-        { icon: '💻', title: 'PC', items: ['Ryzen 7 3700X', 'RTX 5060 Ti 16GB', '32 GB RAM', 'WOLED QHD 240Hz (ROG)'] },
+        { icon: '💻', title: 'PC', items: ['Ryzen 7 3700X', 'RTX 5060 Ti 16GB', '64 GB RAM', 'WOLED QHD 240Hz (ROG)'] },
         { icon: '🥽', title: 'VR', items: ['Meta Quest 3', 'PCVR', '6 SlimeVR trackers'] },
         { icon: '🎮', title: 'Other peripherals', items: ['Ajazz AK820 MAX HE', 'ATK F1 V2 Ultimate', 'EasySMX X20'] },
         { icon: '🎧', title: 'Audio', items: ['Logitech G435', 'FIFINE K688'] }
